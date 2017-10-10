@@ -25,6 +25,7 @@
 .container .sound-item.active:hover {
     cursor: pointer;
 }
+.container .sound-item.active:active,
 .container .sound-item.active:focus {
     outline: 0;
 }
