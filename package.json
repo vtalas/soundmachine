@@ -1,0 +1,7 @@
+{
+	"dependencies": {
+		"exoskeleton": "^0.7.0",
+		"jquery": "^3.2.1",
+		"soundjs": "^1.0.1"
+	}
+}

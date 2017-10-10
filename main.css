@@ -1,0 +1,16 @@
+.container {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 100px);
+}
+
+.container .sound-item {
+    background-color: antiquewhite;
+}
+
+.container .sound-item.active {
+    background-color: red;
+}
+
+
