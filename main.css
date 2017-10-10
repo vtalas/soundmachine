@@ -1,8 +1,8 @@
 .container {
     display: grid;
     grid-gap: 10px;
-    grid-template-columns: repeat(4, 150px);
-    grid-template-rows: repeat(99, 150px);
+    grid-template-columns: repeat(4, 24vw);
+    grid-template-rows: repeat(3, 24vw);
     justify-content: center;
 }
 
@@ -28,13 +28,15 @@
 
 @media screen and (max-width: 780px) {
     .container {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, 49vw);
+        grid-template-rows: repeat(6, 49vw);
     }
 }
 
 @media screen and (max-width: 400px) {
     .container {
-        grid-template-columns: repeat(1, 1fr);
+        grid-template-columns: repeat(1, 90vw);
+        grid-template-rows: repeat(12, 90vw);
     }
 }
 
