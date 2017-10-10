@@ -129,8 +129,10 @@
     var SoundView = Backbone.View.extend({
 
         events: {
-            'click': 'soundClicked'
+            'click': 'soundClicked',
+            'touchstart': 'soundClicked',
         },
+
         className: 'sound-item',
         initialize() {
             const model = this.model;
