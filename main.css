@@ -1,8 +1,13 @@
+body {
+    font-size: 16px;
+}
+
 .container {
+    font-size: 120%;
     display: grid;
     grid-gap: 10px;
-    grid-template-columns: repeat(4, 24vw);
-    grid-template-rows: repeat(3, 24vw);
+    grid-template-columns: repeat(4, 24vh);
+    grid-template-rows: repeat(3, 24vh);
     justify-content: center;
 }
 
@@ -13,13 +18,14 @@
     justify-content: center;
     color: antiquewhite;
     border-radius: 50%;
-    border: 1px solid antiquewhite;
+    border: 3px solid antiquewhite;
     user-select: none;
 }
 
 .container .sound-item.active {
-    color: black;
+    color: dimgray;
     border-color: dimgray;
+    font-weight: bold;
 }
 
 .container .sound-item.active:hover {
