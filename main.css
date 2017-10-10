@@ -2,7 +2,9 @@
     display: grid;
     grid-gap: 10px;
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(4, 100px);
+    grid-template-rows: repeat(99, 100px);
+    max-width: 900px;
+    margin: 0 auto;
 }
 
 .container .sound-item {
@@ -12,5 +14,19 @@
 .container .sound-item.active {
     background-color: red;
 }
+.container .sound-item.active:hover {
+    cursor: pointer;
+}
 
+@media screen and (max-width: 780px) {
+    .container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .container {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
 
