@@ -1,5 +1,45 @@
 (function() {
 
+    if (!('webkitSpeechRecognition' in window)) {
+        console.log('EEEEEEEEEEEEEEE');
+    } else {
+        var recognition = new webkitSpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+
+        var final_transcript;
+
+        recognition.onstart = function() {
+        }
+        recognition.onresult = function(event) {
+
+            var interim_transcript = '';
+
+            for (var i = event.resultIndex; i < event.results.length; ++i) {
+                if (event.results[i].isFinal) {
+                    final_transcript += event.results[i][0].transcript;
+                } else {
+                    interim_transcript += event.results[i][0].transcript;
+                }
+            }
+
+            console.log('**', interim_transcript);
+            console.log('--', final_transcript);
+        }
+        recognition.onerror = function(event) {
+        }
+        recognition.onend = function() {
+        }
+    }
+
+    var start = function() {
+        final_transcript = '';
+        recognition.lang = 'cs';
+        recognition.start();
+    }
+
+    // start();
+
     const files = [
         {
             id: 'wetFart',
@@ -17,6 +57,11 @@
             path: 'assets/fart.mp3'
         },
         {
+            id: 'scary',
+            name: 'scary',
+            path: 'assets/scary.mp3'
+        },
+        {
             id: 'laugh',
             name: 'laugh',
             path: 'assets/laugh.mp3'
@@ -30,16 +75,6 @@
             id: 'bomb',
             name: 'bomb',
             path: 'assets/bomb.mp3'
-        },
-        {
-            id: 'scary',
-            name: 'scary',
-            path: 'assets/scary.mp3'
-        },
-        {
-            id: 'bigApplause',
-            name: 'big applause',
-            path: 'assets/bigApplause.mp3'
         },
         {
             id: 'fail',
@@ -61,6 +96,11 @@
             name: 'small applause',
             path: 'assets/smallApplause.mp3'
         },
+        {
+            id: 'bigApplause',
+            name: 'big applause',
+            path: 'assets/bigApplause.mp3'
+        },
     ]
 
     var Sound = Backbone.Model.extend({});
@@ -76,7 +116,7 @@
                     createjs.Sound.alternateExtensions = ['mp3'];
                     createjs.Sound.registerSound({ src: item.get('path'), id: item.get('id') });
                 })
-            }, 100)
+            }, 50)
         },
 
         fileLoaded(evt) {
@@ -112,7 +152,9 @@
         },
 
         soundClicked() {
-            createjs.Sound.play(this.model.get('id'));
+            if (this.model.get('loaded')) {
+                createjs.Sound.play(this.model.get('id'));
+            }
         }
     });
 

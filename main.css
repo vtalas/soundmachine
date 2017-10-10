@@ -1,19 +1,26 @@
 .container {
     display: grid;
     grid-gap: 10px;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(99, 100px);
-    max-width: 900px;
-    margin: 0 auto;
+    grid-template-columns: repeat(4, 150px);
+    grid-template-rows: repeat(99, 150px);
+    justify-content: center;
 }
 
 .container .sound-item {
-    background-color: antiquewhite;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: antiquewhite;
+    border-radius: 50%;
+    border: 1px solid antiquewhite;
 }
 
 .container .sound-item.active {
-    background-color: red;
+    color: black;
+    border-color: dimgray;
+
 }
+
 .container .sound-item.active:hover {
     cursor: pointer;
 }
