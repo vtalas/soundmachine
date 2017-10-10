@@ -14,16 +14,19 @@
     color: antiquewhite;
     border-radius: 50%;
     border: 1px solid antiquewhite;
+    user-select: none;
 }
 
 .container .sound-item.active {
     color: black;
     border-color: dimgray;
-
 }
 
 .container .sound-item.active:hover {
     cursor: pointer;
+}
+.container .sound-item.active:focus {
+    outline: 0;
 }
 
 @media screen and (max-width: 780px) {
