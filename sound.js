@@ -1,55 +1,74 @@
 (function() {
 
-    if (!('webkitSpeechRecognition' in window)) {
-        console.log('EEEEEEEEEEEEEEE');
-    } else {
-        var recognition = new webkitSpeechRecognition();
-        recognition.continuous = true;
-        recognition.interimResults = true;
 
-        var final_transcript;
+    var recognition = function(model) {
 
-        recognition.onstart = function() {
-        }
-        recognition.onresult = function(event) {
+        if (!('webkitSpeechRecognition' in window)) {
+            console.log('EEEEEEEEEEEEEEE');
+        } else {
+            var recognition = new webkitSpeechRecognition();
+            recognition.continuous = true;
+            recognition.interimResults = true;
+            var final_transcript = '';
 
-            var interim_transcript = '';
 
-            for (var i = event.resultIndex; i < event.results.length; ++i) {
-                if (event.results[i].isFinal) {
-                    final_transcript += event.results[i][0].transcript;
-                } else {
-                    interim_transcript += event.results[i][0].transcript;
+            console.log(recognition);
+            recognition.onstart = function() {
+            }
+            recognition.onresult = function(event) {
+
+                var interim_transcript = '';
+
+                for (var i = event.resultIndex; i < event.results.length; ++i) {
+                    if (event.results[i].isFinal) {
+                        final_transcript += event.results[i][0].transcript;
+                    } else {
+                        interim_transcript += event.results[i][0].transcript;
+                    }
+                }
+
+                console.log('???', interim_transcript);
+                console.log('recognized: ', final_transcript);
+                if (final_transcript) {
+
+                    collection.trigger('recognize:word', { value: final_transcript });
+                    final_transcript = '';
                 }
             }
+            recognition.onerror = function(event) {
+                console.log('error', arguments);
+            }
+            recognition.onend = function() {
+                console.log("end");
+            }
+        }
 
-            console.log('**', interim_transcript);
-            console.log('--', final_transcript);
+        var start = function() {
+            final_transcript = '';
+            recognition.lang = 'cs';
+            recognition.start();
         }
-        recognition.onerror = function(event) {
-        }
-        recognition.onend = function() {
-        }
+
+        start();
     }
-
-    var start = function() {
-        final_transcript = '';
-        recognition.lang = 'cs';
-        recognition.start();
-    }
-
-    // start();
 
     const files = [
         {
             id: 'wetFart',
             name: 'wet fart',
-            path: 'assets/wetFart.mp3'
+            path: 'assets/wetFart.mp3',
+            recognize: [
+                'pavel'
+            ]
         },
         {
             id: 'girlFart',
             name: 'girl fart',
-            path: 'assets/girlFart.mp3'
+            path: 'assets/girlFart.mp3',
+            recognize: [
+                'tom', 'tomáš'
+            ]
+
         },
         {
             id: 'fart',
@@ -59,12 +78,18 @@
         {
             id: 'scary',
             name: 'scary',
-            path: 'assets/scary.mp3'
+            path: 'assets/scary.mp3',
+            recognize: [
+                'test',
+            ]
         },
         {
             id: 'laugh',
             name: 'laugh',
-            path: 'assets/laugh.mp3'
+            path: 'assets/laugh.mp3',
+            recognize: [
+                'pes',
+            ]
         },
         {
             id: 'laughAndApplause',
@@ -74,7 +99,10 @@
         {
             id: 'bomb',
             name: 'bomb',
-            path: 'assets/bomb.mp3'
+            path: 'assets/bomb.mp3',
+            recognize: [
+                'vladimír'
+            ]
         },
         {
             id: 'fail',
@@ -89,7 +117,11 @@
         {
             id: 'burp',
             name: 'burp',
-            path: 'assets/burp.mp3'
+            path: 'assets/burp.mp3',
+            recognize: [
+                'mletý řízek',
+            ]
+
         },
         {
             id: 'smallApplause',
@@ -111,11 +143,22 @@
 
             createjs.Sound.on('fileload', this.fileLoaded.bind(this));
 
+            this.on('recognize:word', this.playRecognized)
+
+            this._wordMap = [];
+            this._soundsToPlay = [];
+
             setTimeout(() => {
                 this.models.forEach((item) => {
+
+                    let recognize = item.get('recognize') || [];
+                    recognize.map(word => {
+                        this._wordMap.push({ id: item.get('id'), value: word });
+                    })
                     createjs.Sound.alternateExtensions = ['mp3'];
                     createjs.Sound.registerSound({ src: item.get('path'), id: item.get('id') });
                 })
+                console.log(this._wordMap);
             }, 50)
         },
 
@@ -124,7 +167,48 @@
             model.set('loaded', true);
         },
 
+
+        playRecognized(data) {
+            let value = (data.value || '').toLowerCase().trim();
+
+            if (!value) {
+                return;
+            }
+
+            console.log(JSON.stringify(value), data);
+            this._wordMap.forEach(wordMatch => {
+                if (value.includes(wordMatch.value)) {
+
+                    this._soundsToPlay.push(wordMatch.id);
+                }
+            })
+
+            player.aaa(this._soundsToPlay);
+        }
     });
+
+    var player = {
+
+        aaa(a) {
+            var batch = a.reverse();
+
+            let x = batch.pop();
+            if (!x) {
+                return;
+            }
+            createjs.Sound.play(x);
+
+            var interval = setInterval(() => {
+                let x = batch.pop();
+                if (!x) {
+                    clearInterval(interval)
+                    return;
+                }
+                createjs.Sound.play(x);
+            }, 1000)
+        },
+    }
+
 
     var SoundView = Backbone.View.extend({
 
@@ -183,8 +267,11 @@
     var collection = new SoundCollection(files);
     var collectionView = new SoundListView({ collection });
 
+    recognition(collection);
+
     collectionView.render().$el.appendTo($('body'));
 
     // collection.on('all', console.log)
     window.colleciton = collection;
+    window.player = player;
 }())
