@@ -6,8 +6,8 @@ body {
     font-size: 120%;
     display: grid;
     grid-gap: 10px;
-    grid-template-columns: repeat(4, 24vh);
-    grid-template-rows: repeat(3, 24vh);
+    grid-template-columns: repeat(4, 24vmin);
+    grid-template-rows: repeat(3, 24vmin);
     justify-content: center;
 }
 
@@ -36,17 +36,17 @@ body {
     outline: 0;
 }
 
-@media screen and (max-width: 780px) {
-    .container {
-        grid-template-columns: repeat(2, 49vw);
-        grid-template-rows: repeat(6, 49vw);
-    }
-}
-
-@media screen and (max-width: 400px) {
-    .container {
-        grid-template-columns: repeat(1, 90vw);
-        grid-template-rows: repeat(12, 90vw);
-    }
-}
+/*@media screen and (max-width: 780px) {*/
+    /*.container {*/
+        /*grid-template-columns: repeat(2, 49vw);*/
+        /*grid-template-rows: repeat(6, 49vw);*/
+    /*}*/
+/*}*/
+/**/
+/*@media screen and (max-width: 400px) {*/
+    /*.container {*/
+        /*grid-template-columns: repeat(1, 90vw);*/
+        /*grid-template-rows: repeat(12, 90vw);*/
+    /*}*/
+/*}*/
 
